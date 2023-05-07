@@ -1,1 +1,23 @@
+In order to complete this challenge I had to research and ended up using the following code lines from another student as reference:
 
+"
+Quan = Final_Tumor_df.groupby(["Drug Regimen"]).quantile([.25,.75],numeric_only=True)
+for treatment in Treatment_List:
+    # Locate the rows which contain mice on each drug and get the tumor volumes
+    Current_df = Final_Tumor_df.loc[treatment]
+    
+    # add subset
+    Tumor_Plot.append(Current_df["Tumor Volume (mm3)"])
+    
+    # Determine outliers using upper and lower bounds
+    lower_q = Quan["Tumor Volume (mm3)"].loc[(treatment,0.25)]
+    upper_q = Quan["Tumor Volume (mm3)"].loc[(treatment,0.75)]
+    iqr = upper_q - lower_q
+    
+    lower_bound = lower_q - 1.5*iqr
+    upper_bound = upper_q + 1.5*iqr
+    outliers = Current_df["Tumor Volume (mm3)"].loc[(Current_df["Tumor Volume (mm3)"] < lower_bound) | \
+                              (Current_df["Tumor Volume (mm3)"] > upper_bound)]
+    print(f"{treatment}'s potential outliers: {outliers}")
+    "
+from: https://github.com/Adam-Kertz/plot-challenge/blob/main/Pymaceuticals/pymaceuticals_starter.ipynb
